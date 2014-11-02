@@ -372,9 +372,7 @@ class TilesPanel extends JPanel {
         // Water over total tiles fraction.
         stringBuilder.append(Integer.toString(water)).append('/').append(Integer.toString(total)).append(' ');
         // Water percentage.
-        stringBuilder.append('(');
-        stringBuilder.append(Double.toString(100.0 * water / totalTiles)).append('%');
-        stringBuilder.append(')');
+        stringBuilder.append('(').append(Utils.getPercentageString(water, totalTiles)).append(')');
         // Mouse click count.
         if (mouseClicks > 0) {
             stringBuilder.append(" after ");

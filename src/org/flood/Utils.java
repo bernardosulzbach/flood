@@ -2,7 +2,7 @@ package org.flood;
 
 /**
  * Utility class for the Flood game.
- *
+ * <p/>
  * Created by Bernardo Sulzbach on 02/11/14.
  */
 
@@ -19,4 +19,14 @@ public class Utils {
         return s.substring(0, 1).toUpperCase().concat(s.substring(1).toLowerCase());
     }
 
+    /**
+     * Given two integers, this method produces a percentage string.
+     *
+     * @param a the denominator of the fraction.
+     * @param b the numerator of the fraction.
+     * @return a string of the of the form *.*%.
+     */
+    public static String getPercentageString(int a, int b) {
+        return String.format("%.1f%%", 100.0 * a / b);
+    }
 }
