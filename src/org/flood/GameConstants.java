@@ -12,10 +12,6 @@ public class GameConstants {
     protected static final int MENU_BAR_HEIGHT = 20;
     protected static final int STATUS_BAR_HEIGHT = 20;
 
-//    static final Color WATER = Color.BLUE;
-//    static final Color BEACH = Color.ORANGE;
-//    static final Color GRASS = Color.GREEN;
-
     static final String END_GAME_TITLE = "Flood complete!"; // Seriously? Who would have thought that?
     static final String END_GAME_MESSAGE = "Everything was flooded.\nPlay again?"; // No. Do not play this again.
 

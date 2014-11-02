@@ -56,8 +56,19 @@ public class Game {
             themeMenu.add(menuItem);
         }
 
+        // An option to reset the game.
+        JMenuItem resetOption = new JMenuItem("Reset");
+        resetOption.setToolTipText("Recreates the tiles and resets the counter.");
+        resetOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.reinitialize();
+            }
+        });
+
         optionsMenu.add(sizeMenu);
         optionsMenu.add(themeMenu);
+        optionsMenu.add(resetOption);
 
         menuBar.add(optionsMenu);
 

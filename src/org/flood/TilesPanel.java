@@ -151,6 +151,7 @@ class TilesPanel extends JPanel {
      */
     public void reinitialize() {
         initializeTileMatrix(GameConstants.DEFAULT_INITIALIZATION_MODE);
+        repaint();
     }
 
     /**
