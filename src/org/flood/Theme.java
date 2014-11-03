@@ -9,11 +9,11 @@ import java.util.HashMap;
  * Created by Bernardo Sulzbach on 02/11/14.
  */
 
-public class Theme {
+class Theme {
 
-    protected final String name;
+    final String name;
 
-    protected final HashMap<TileType, Color> colors = new HashMap<TileType, Color>(3);
+    final HashMap<TileType, Color> colors = new HashMap<TileType, Color>(3);
 
     public Theme(String name, Color sand, Color grass, Color water) {
         this.name = name;

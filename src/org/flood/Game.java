@@ -5,28 +5,26 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static org.flood.GameConstants.MENU_BAR_HEIGHT;
-import static org.flood.GameConstants.STATUS_BAR_HEIGHT;
+import static org.flood.GameData.MENU_BAR_HEIGHT;
+import static org.flood.GameData.STATUS_BAR_HEIGHT;
 
 /**
  * The main class of the game. A Game object represents a whole game.
  * <p/>
  * Created by Bernardo on 23/10/2014.
  */
-public class Game {
+class Game {
 
-    private JFrame frame = new JFrame("Flood!");
-    private GameSize gameSize;
+    private final JFrame frame = new JFrame("Flood!");
 
-    private TilesPanel panel;
+    private final GamePanel panel;
 
-    protected Game(GameSize gameSize) {
-        this.gameSize = gameSize;
-        this.panel = new TilesPanel(gameSize);
-        initComponents();
+    Game(GameSize gameSize) {
+        this.panel = new GamePanel(gameSize);
+        initComponents(gameSize);
     }
 
-    private void initComponents() {
+    private void initComponents(GameSize gameSize) {
         JMenuBar menuBar = new JMenuBar();
         JMenu optionsMenu = new JMenu("Options");
         JMenu sizeMenu = new JMenu("Size");
@@ -66,16 +64,27 @@ public class Game {
             }
         });
 
+        // Another way to close the game.
+        JMenuItem exitOption = new JMenuItem("Exit");
+        exitOption.setToolTipText("Because simply closing the window is far too mainstream.");
+        exitOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
         optionsMenu.add(sizeMenu);
         optionsMenu.add(themeMenu);
         optionsMenu.add(resetOption);
+        optionsMenu.add(exitOption);
 
         menuBar.add(optionsMenu);
 
         frame.setJMenuBar(menuBar);
         frame.add(panel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        updateFrameSize();
+        updateFrameSize(gameSize);
         centerFrame();
         frame.setResizable(false);
         frame.setVisible(true);
@@ -85,12 +94,17 @@ public class Game {
         this.panel.setTheme(theme);
     }
 
-    public void setGameSize(GameSize gameSize) {
-        this.gameSize = gameSize;
+    void setGameSize(GameSize gameSize) {
         panel.resize(gameSize);
         panel.reinitialize();
-        updateFrameSize();
+        updateFrameSize(gameSize);
         centerFrame();
+    }
+
+    private void updateFrameSize(GameSize gameSize) {
+        int panelSide = gameSize.tileSide * gameSize.tilesPerRow;
+        frame.setSize(panelSide, panelSide + MENU_BAR_HEIGHT + STATUS_BAR_HEIGHT);
+        frame.repaint();
     }
 
     /**
@@ -98,10 +112,6 @@ public class Game {
      */
     private void centerFrame() {
         frame.setLocationRelativeTo(null);
-    }
-
-    private void updateFrameSize() {
-        frame.setSize(gameSize.tileWidth * gameSize.tilesPerRow, gameSize.tileWidth * gameSize.tilesPerRow + MENU_BAR_HEIGHT + STATUS_BAR_HEIGHT);
     }
 
 }

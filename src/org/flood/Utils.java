@@ -6,7 +6,7 @@ package org.flood;
  * Created by Bernardo Sulzbach on 02/11/14.
  */
 
-public class Utils {
+class Utils {
 
     /**
      * Given a string, this method returns a string with the same contents, but with the first character converted to

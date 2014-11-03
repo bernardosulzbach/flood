@@ -1,5 +1,5 @@
 package org.flood;
 
-public enum TileArrayInitializationMode {
+public enum GeneratorMode {
     SIMPLE, SQUARES, COMPLEX
 }
