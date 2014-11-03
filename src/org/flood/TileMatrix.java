@@ -156,9 +156,8 @@ class TileMatrix {
                 double randomDouble;
                 for (int j = 0; j < tileArray.length; j += 2) {
                     for (int i = 0; i < tileArray.length; i += 2) {
-                        //System.out.println(j + " " + i);
 
-                        // Check if this is a water square or a grass square.
+                        // Check if this tile will be filled with water.
                         if (GameData.random.nextDouble() < GameData.WATER_RATE) {
 
                             // Get how many tiles will get the water spread effect.
@@ -194,66 +193,41 @@ class TileMatrix {
                                             if ((a == 0 || a == 1) && (b == 0 || b == 1)) {
                                                 tileArray[y][x] = new Tile(TileType.WATER);
                                             } else {
-                                                // Is there water to spread?
-                                                if (spreading != 0) {
-                                                    // Not a diagonal, right?
-                                                    if (!((a == -1 || a == 2) && (b == -1 || b == 2))) {
-                                                        // Check if this is the marginal tile to start filling.
-                                                        if (remainingNeighbors == 1 || GameData.random.nextInt(notDiagonalNeighbors) == 0) {
-                                                            tileArray[y][x] = new Tile(TileType.WATER);
-                                                            if (spreading == 2) {
-                                                                // Not so much. Even more genius. Whoa!
-                                                                // Spread, preferentially, to the left.
-                                                                if (a == -1) {
-                                                                    if (x > 0) {
-                                                                        tileArray[y][x - 1] = new Tile(TileType.WATER);
-                                                                    } else if (y > 0) {
-                                                                        tileArray[y - 1][x] = new Tile(TileType.WATER);
-                                                                    } else {
-                                                                        tileArray[y + 1][x] = new Tile(TileType.WATER);
-                                                                    }
-                                                                }
-                                                                // Spread, preferentially, to the right.
-                                                                else if (a == 2) {
-                                                                    if (x < tileArray.length - 1) {
-                                                                        tileArray[y][x + 1] = new Tile(TileType.WATER);
-                                                                    } else if (y > 0) {
-                                                                        tileArray[y - 1][x] = new Tile(TileType.WATER);
-                                                                    } else {
-                                                                        tileArray[y + 1][x] = new Tile(TileType.WATER);
-                                                                    }
-                                                                }
-                                                                // Spread, preferentially, towards north.
-                                                                else if (b == -1) {
-                                                                    if (y > 0) {
-                                                                        tileArray[y - 1][x] = new Tile(TileType.WATER);
-                                                                    } else if (x > 0) {
-                                                                        tileArray[y][x - 1] = new Tile(TileType.WATER);
-                                                                    } else {
-                                                                        tileArray[y][x + 1] = new Tile(TileType.WATER);
-                                                                    }
-                                                                }
-                                                                // Spread, preferentially, towards south.
-                                                                else {
-                                                                    if (y < tileArray.length - 1) {
-                                                                        tileArray[y + 1][x] = new Tile(TileType.WATER);
-                                                                    } else if (x > 0) {
-                                                                        tileArray[y][x - 1] = new Tile(TileType.WATER);
-                                                                    } else {
-                                                                        tileArray[y][x + 1] = new Tile(TileType.WATER);
-                                                                    }
-                                                                }
+                                                // Is there water to spread and we are not in a diagonal?
+                                                if (spreading != 0 && !((a == -1 || a == 2) && (b == -1 || b == 2))) {
+                                                    // Check if this is the marginal tile to start filling.
+                                                    if (remainingNeighbors == 1 || GameData.random.nextInt(notDiagonalNeighbors) == 0) {
+                                                        // Fill the first tile.
+                                                        tileArray[y][x] = new Tile(TileType.WATER);
+                                                        if (spreading == 2) {
+                                                            // If two tiles should be filled, fill the second tile.
+                                                            // Spread, preferentially, to the left.
+                                                            if (a == -1) {
+                                                                spreadWater(x, y, Direction.WEST);
                                                             }
-                                                            // The water was spread. It shall now be zeroed.
-                                                            // "Much complex, very genius." - Echoes from my past.
-                                                            spreading = 0;
-                                                        } else {
-                                                            // After hitting a viable neighbor but not spreading water
-                                                            // over it, decrement our remaining neighbors counter.
-                                                            remainingNeighbors--;
+                                                            // Spread, preferentially, to the right.
+                                                            else if (a == 2) {
+                                                                spreadWater(x, y, Direction.EAST);
+                                                            }
+                                                            // Spread, preferentially, towards north.
+                                                            else if (b == -1) {
+                                                                spreadWater(x, y, Direction.NORTH);
+                                                            }
+                                                            // Spread, preferentially, towards south.
+                                                            else {
+                                                                spreadWater(x, y, Direction.SOUTH);
+                                                            }
                                                         }
+                                                        // The water was spread. It shall now be zeroed.
+                                                        // "Much complex, very genius." - Echoes from my past.
+                                                        spreading = 0;
+                                                    } else {
+                                                        // After hitting a viable neighbor but not spreading water
+                                                        // over it, decrement our remaining neighbors counter.
+                                                        remainingNeighbors--;
                                                     }
                                                 }
+
                                             }
                                         }
                                     }
@@ -281,6 +255,50 @@ class TileMatrix {
         assertMinimumWaterLevel();
         updateTiles();
         updateWaterCount();
+    }
+
+    /**
+     * Attempts to spread water towards a given direction from (x, y).
+     *
+     * @param x         the x coordinate.
+     * @param y         the y coordinate.
+     * @param direction the direction towards where water will be spread.
+     */
+    private void spreadWater(int x, int y, Direction direction) {
+        switch (direction) {
+            case WEST:
+                if (x > 0) {
+                    tileArray[y][x - 1] = new Tile(TileType.WATER);
+                } else if (y > 0) {
+                    tileArray[y - 1][x] = new Tile(TileType.WATER);
+                } else {
+                    tileArray[y + 1][x] = new Tile(TileType.WATER);
+                }
+            case EAST:
+                if (x < tileArray.length - 1) {
+                    tileArray[y][x + 1] = new Tile(TileType.WATER);
+                } else if (y > 0) {
+                    tileArray[y - 1][x] = new Tile(TileType.WATER);
+                } else {
+                    tileArray[y + 1][x] = new Tile(TileType.WATER);
+                }
+            case NORTH:
+                if (y > 0) {
+                    tileArray[y - 1][x] = new Tile(TileType.WATER);
+                } else if (x > 0) {
+                    tileArray[y][x - 1] = new Tile(TileType.WATER);
+                } else {
+                    tileArray[y][x + 1] = new Tile(TileType.WATER);
+                }
+            case SOUTH:
+                if (y < tileArray.length - 1) {
+                    tileArray[y + 1][x] = new Tile(TileType.WATER);
+                } else if (x > 0) {
+                    tileArray[y][x - 1] = new Tile(TileType.WATER);
+                } else {
+                    tileArray[y][x + 1] = new Tile(TileType.WATER);
+                }
+        }
     }
 
     /**
