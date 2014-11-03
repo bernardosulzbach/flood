@@ -74,9 +74,7 @@ class GamePanel extends JPanel {
     private void endGameOptionPane() {
         int choice = JOptionPane.showConfirmDialog(this, GameData.END_GAME_MESSAGE, GameData.END_GAME_TITLE, JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.YES_OPTION) {
-            tileMatrix.reinitialize();
-            resetMouseClicks();
-            repaint();
+            reinitialize();
         } else {
             System.exit(0);
         }
@@ -100,6 +98,7 @@ class GamePanel extends JPanel {
      */
     public void reinitialize() {
         tileMatrix.reinitialize();
+        resetMouseClicks();
         repaint();
     }
 
