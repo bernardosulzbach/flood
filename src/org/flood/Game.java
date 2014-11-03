@@ -84,10 +84,10 @@ class Game {
         frame.setJMenuBar(menuBar);
         frame.add(panel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        updateFrameSize(gameSize);
-        centerFrame();
         frame.setResizable(false);
+        // The frame must be set visible before the game size is set due to a Windows windowing issue.
         frame.setVisible(true);
+        setGameSize(gameSize);
     }
 
     public void setTheme(Theme theme) {
@@ -103,7 +103,10 @@ class Game {
 
     private void updateFrameSize(GameSize gameSize) {
         int panelSide = gameSize.tileSide * gameSize.tilesPerRow;
-        frame.setSize(panelSide, panelSide + MENU_BAR_HEIGHT + STATUS_BAR_HEIGHT);
+        Insets insets = frame.getInsets();
+        int width = panelSide + insets.right + insets.left;
+        int height = panelSide + MENU_BAR_HEIGHT + STATUS_BAR_HEIGHT + insets.bottom + insets.top;
+        frame.setSize(width, height);
         frame.repaint();
     }
 
