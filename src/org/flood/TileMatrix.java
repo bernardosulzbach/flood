@@ -16,6 +16,8 @@ class TileMatrix {
 
     private final ArrayList<Tile> alreadyHitInThisChainReaction = new ArrayList<Tile>();
 
+    private int lastWaterCount;
+
     public TileMatrix(GameSize gameSize, GeneratorMode generatorMode) {
         this.tileArray = new Tile[gameSize.tilesPerRow][gameSize.tilesPerRow];
         this.generatorMode = generatorMode;
@@ -39,15 +41,21 @@ class TileMatrix {
      * @return an int.
      */
     int getWaterCount() {
-        int count = 0;
+        return lastWaterCount;
+    }
+
+    /**
+     * Updates the water count variable. Should be called whenever the number of water tiles changes.
+     */
+    private void updateWaterCount() {
+        lastWaterCount = 0;
         for (Tile[] row : tileArray) {
             for (Tile tile : row) {
                 if (tile.isWater()) {
-                    count++;
+                    lastWaterCount++;
                 }
             }
         }
-        return count;
     }
 
     /**
@@ -63,6 +71,7 @@ class TileMatrix {
         flood(i, j);
         alreadyHitInThisChainReaction.clear();
         updateTiles();
+        updateWaterCount();
     }
 
     /**
@@ -271,6 +280,7 @@ class TileMatrix {
         }
         assertMinimumWaterLevel();
         updateTiles();
+        updateWaterCount();
     }
 
     /**
