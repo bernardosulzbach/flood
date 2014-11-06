@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 /**
  * Theme class used to store themes.
- *
+ * <p/>
  * Created by Bernardo Sulzbach on 02/11/14.
  */
 

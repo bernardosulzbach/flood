@@ -18,6 +18,8 @@ class GamePanel extends JPanel {
     private int tilesPerRow;
     private int totalTiles;
 
+    private boolean highlightSelectedTile;
+
     private Theme theme;
     private TileMatrix tileMatrix;
 
@@ -34,6 +36,7 @@ class GamePanel extends JPanel {
         resize(gameSize);
         // Set the font used to write the status.
         setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -50,8 +53,24 @@ class GamePanel extends JPanel {
                 }
             }
         });
+
+        this.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                if (highlightSelectedTile) {
+                    repaint();
+                }
+            }
+        });
     }
 
+    /**
+     * Inverts the highlightSelectedTile boolean.
+     */
+    public void toggleHighlightSelectedTile() {
+        this.highlightSelectedTile = !highlightSelectedTile;
+    }
 
     public void setTheme(Theme theme) {
         this.theme = theme;
@@ -83,18 +102,37 @@ class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (int j = 0; j < tilesPerRow; j++) {
-            for (int i = 0; i < tilesPerRow; i++) {
-                g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
-                g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
+        if (highlightSelectedTile) {
+            Point mousePosition = getMousePosition();
+            int mouseI, mouseJ;
+            // TODO: write a method for this and the mouse position code in the constructor to avoid repeated code.
+            if (mousePosition != null) {
+                mouseI = (int) mousePosition.getX() / tileSide;
+                mouseJ = (int) mousePosition.getY() / tileSide;
+            } else {
+                mouseI = mouseJ = -1;
+            }
+            for (int j = 0; j < tilesPerRow; j++) {
+                for (int i = 0; i < tilesPerRow; i++) {
+                    g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
+                    // The tile where the mouse is positioned will be 'down'. All the others are 'up'.
+                    g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, !(i == mouseI && j == mouseJ));
+                }
+            }
+        } else {
+            for (int j = 0; j < tilesPerRow; j++) {
+                for (int i = 0; i < tilesPerRow; i++) {
+                    g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
+                    g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
+                }
             }
         }
         updateStatusBar(g);
     }
 
     /**
-     * Reinitializes the game panel, erasing all the current progress made by the player. Used to update the panel
-     * after a new panel size is set.
+     * Reinitializes the game panel, erasing all the current progress made by the player. Used to update the panel after
+     * a new panel size is set.
      */
     public void reinitialize() {
         tileMatrix.reinitialize();

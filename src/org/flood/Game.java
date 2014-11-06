@@ -54,6 +54,15 @@ class Game {
             themeMenu.add(menuItem);
         }
 
+        // The toggle for highlighting the selected tile.
+        JMenuItem highlightOption = new JMenuItem("Highlight");
+        highlightOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.toggleHighlightSelectedTile();
+            }
+        });
+
         // An option to reset the game.
         JMenuItem resetOption = new JMenuItem("Reset");
         resetOption.setToolTipText("Recreates the tiles and resets the counter.");
@@ -76,6 +85,7 @@ class Game {
 
         optionsMenu.add(sizeMenu);
         optionsMenu.add(themeMenu);
+        optionsMenu.add(highlightOption);
         optionsMenu.add(resetOption);
         optionsMenu.add(exitOption);
 

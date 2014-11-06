@@ -1,8 +1,8 @@
 package org.flood;
 
 /**
-* Created by Bernardo Sulzbach on 02/11/14.
-*/
+ * Created by Bernardo Sulzbach on 02/11/14.
+ */
 class Tile {
 
     private TileType type;
