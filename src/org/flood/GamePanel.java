@@ -41,11 +41,10 @@ class GamePanel extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mouseClicked(e);
-                int i = e.getX() / tileSide;
-                int j = e.getY() / tileSide;
-                if (i >= 0 && i < tilesPerRow && j >= 0 && j < tilesPerRow) {
+                int[] c = getMouseCoordinates(e.getPoint());
+                if (c[0] >= 0 && c[0] < tilesPerRow && c[1] >= 0 && c[1] < tilesPerRow) {
                     mouseClicks++;
-                    tileMatrix.startFlood(i, j);
+                    tileMatrix.startFlood(c[0], c[1]);
                     repaint();
                     if (tileMatrix.getWaterCount() == totalTiles) {
                         endGameOptionPane();
@@ -99,24 +98,35 @@ class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * @param mousePosition the point the mouse is pointing to.
+     * @return an array of two integers representing the mouse coordinates on the grid.
+     */
+    private int[] getMouseCoordinates(Point mousePosition) {
+        int[] coordinates = new int[2];
+        if (mousePosition != null) {
+            coordinates[0] = (int) (mousePosition.getX() / tileSide);
+            coordinates[1] = (int) (mousePosition.getY() / tileSide);
+        } else {
+            coordinates[0] = coordinates[1] = -1;
+        }
+        return coordinates;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (highlightSelectedTile) {
-            Point mousePosition = getMousePosition();
-            int mouseI, mouseJ;
-            // TODO: write a method for this and the mouse position code in the constructor to avoid repeated code.
-            if (mousePosition != null) {
-                mouseI = (int) mousePosition.getX() / tileSide;
-                mouseJ = (int) mousePosition.getY() / tileSide;
-            } else {
-                mouseI = mouseJ = -1;
-            }
+            int[] coordinates = getMouseCoordinates(getMousePosition());
             for (int j = 0; j < tilesPerRow; j++) {
                 for (int i = 0; i < tilesPerRow; i++) {
                     g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
                     // The tile where the mouse is positioned will be 'down'. All the others are 'up'.
-                    g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, !(i == mouseI && j == mouseJ));
+                    if (i == coordinates[0] && j == coordinates[1]) {
+                        g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, false);
+                    } else {
+                        g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
+                    }
                 }
             }
         } else {
