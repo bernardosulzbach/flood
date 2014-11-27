@@ -81,27 +81,39 @@ class TileMatrix {
      * @param j the j coordinate.
      */
     private void flood(int i, int j) {
+        flood(i, j, false);
+    }
+
+    /**
+     * Floods the tile found in (i, j) and propagates the flood all floodable adjacent tiles.
+     *
+     * @param i the i coordinate.
+     * @param j the j coordinate.
+     */
+    private void flood(int i, int j, boolean simulated) {
         if (!alreadyHitInThisChainReaction.contains(tileArray[j][i]) && tileArray[j][i].isFloodable()) {
             alreadyHitInThisChainReaction.add(tileArray[j][i]);
-            tileArray[j][i].setType(TileType.WATER);
+            if (!simulated) {
+                tileArray[j][i].setType(TileType.WATER);
+            }
             if (j != 0) {
                 if (tileArray[j - 1][i].isFloodable()) {
-                    flood(i, j - 1);
+                    flood(i, j - 1, simulated);
                 }
             }
             if (j != tileArray.length - 1) {
                 if (tileArray[j + 1][i].isFloodable()) {
-                    flood(i, j + 1);
+                    flood(i, j + 1, simulated);
                 }
             }
             if (i != 0) {
                 if (tileArray[j][i - 1].isFloodable()) {
-                    flood(i - 1, j);
+                    flood(i - 1, j, simulated);
                 }
             }
             if (i != tileArray.length - 1) {
                 if (tileArray[j][i + 1].isFloodable()) {
-                    flood(i + 1, j);
+                    flood(i + 1, j, simulated);
                 }
             }
         }
@@ -301,6 +313,14 @@ class TileMatrix {
         }
     }
 
+    ArrayList<Tile> getSelection(int i, int j) {
+        flood(i, j, true);
+        ArrayList<Tile> selection = new ArrayList<Tile>(alreadyHitInThisChainReaction.size());
+        selection.addAll(alreadyHitInThisChainReaction);
+        alreadyHitInThisChainReaction.clear();
+        return selection;
+    }
+
     /**
      * Guarantees that there is at least one water tile on the array. If (and only if) water was added, it also updates
      * the tiles.
@@ -344,6 +364,10 @@ class TileMatrix {
                 }
             }
         }
+    }
+
+    public Tile getTile(int i, int j) {
+        return tileArray[j][i];
     }
 
 }

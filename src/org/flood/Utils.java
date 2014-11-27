@@ -16,7 +16,7 @@ class Utils {
      * @return the converted string.
      */
     public static String toTitle(String s) {
-        return s.substring(0, 1).toUpperCase().concat(s.substring(1).toLowerCase());
+        return s.substring(0, 1).toUpperCase().concat(s.substring(1).toLowerCase()).replaceAll("_", " ");
     }
 
     /**
@@ -29,4 +29,5 @@ class Utils {
     public static String getPercentageString(int a, int b) {
         return String.format("%.1f%%", 100.0 * a / b);
     }
+
 }

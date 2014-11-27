@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * The panel added into the Game.
@@ -18,7 +19,7 @@ class GamePanel extends JPanel {
     private int tilesPerRow;
     private int totalTiles;
 
-    private boolean highlightSelectedTile;
+    private HighlightMode highlightMode;
 
     private Theme theme;
     private TileMatrix tileMatrix;
@@ -33,6 +34,7 @@ class GamePanel extends JPanel {
         tileMatrix = new TileMatrix(gameSize, GameData.DEFAULT_GENERATOR_MODE);
         setBackground(Color.BLACK);
         setTheme(GameData.THEMES[0]);
+        highlightMode = HighlightMode.NONE;
         resize(gameSize);
         // Set the font used to write the status.
         setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
@@ -57,18 +59,12 @@ class GamePanel extends JPanel {
             @Override
             public void mouseMoved(MouseEvent e) {
                 super.mouseMoved(e);
-                if (highlightSelectedTile) {
+                if (highlightMode != HighlightMode.NONE) {
+                    // TODO: check if the selected tile changed before invoking repaint(), to improve performance.
                     repaint();
                 }
             }
         });
-    }
-
-    /**
-     * Inverts the highlightSelectedTile boolean.
-     */
-    public void toggleHighlightSelectedTile() {
-        this.highlightSelectedTile = !highlightSelectedTile;
     }
 
     public void setTheme(Theme theme) {
@@ -116,24 +112,49 @@ class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (highlightSelectedTile) {
-            int[] coordinates = getMouseCoordinates(getMousePosition());
-            for (int j = 0; j < tilesPerRow; j++) {
-                for (int i = 0; i < tilesPerRow; i++) {
-                    g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
-                    // The tile where the mouse is positioned will be 'down'. All the others are 'up'.
-                    if (i == coordinates[0] && j == coordinates[1]) {
-                        g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, false);
-                    } else {
+        switch (highlightMode) {
+            case NONE: {
+                for (int j = 0; j < tilesPerRow; j++) {
+                    for (int i = 0; i < tilesPerRow; i++) {
+                        g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
                         g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
                     }
                 }
             }
-        } else {
-            for (int j = 0; j < tilesPerRow; j++) {
-                for (int i = 0; i < tilesPerRow; i++) {
-                    g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
-                    g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
+            break;
+            case SELECTED_TILE: {
+                int[] coordinates = getMouseCoordinates(getMousePosition());
+                for (int j = 0; j < tilesPerRow; j++) {
+                    for (int i = 0; i < tilesPerRow; i++) {
+                        g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
+                        // The tile where the mouse is positioned is 'down'. All the others are 'up'.
+                        if (i == coordinates[0] && j == coordinates[1]) {
+                            g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, false);
+                        } else {
+                            g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
+                        }
+                    }
+                }
+            }
+            break;
+            case FULL: {
+                int[] c = getMouseCoordinates(getMousePosition());
+                ArrayList<Tile> selection;
+                if (c[0] != -1 && c[0] < tilesPerRow && c[1] != -1 && c[1] < tilesPerRow) {
+                    selection = tileMatrix.getSelection(c[0], c[1]);
+                } else {
+                    selection = new ArrayList<Tile>(0);
+                }
+                for (int j = 0; j < tilesPerRow; j++) {
+                    for (int i = 0; i < tilesPerRow; i++) {
+                        g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
+                        // The selected tiles are 'down'. All the others are 'up'.
+                        if (selection.contains(tileMatrix.getTile(i, j))) {
+                            g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, false);
+                        } else {
+                            g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
+                        }
+                    }
                 }
             }
         }
@@ -173,6 +194,10 @@ class GamePanel extends JPanel {
 
     void resetMouseClicks() {
         mouseClicks = 0;
+    }
+
+    public void setHighlightMode(HighlightMode highlightMode) {
+        this.highlightMode = highlightMode;
     }
 
 }

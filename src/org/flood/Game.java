@@ -29,6 +29,7 @@ class Game {
         JMenu optionsMenu = new JMenu("Options");
         JMenu sizeMenu = new JMenu("Size");
         JMenu themeMenu = new JMenu("Theme");
+        JMenu highlightMenu = new JMenu("Highlight");
 
         // Make a menu item for each GameSize value.
         for (final GameSize possibleSize : GameSize.values()) {
@@ -54,14 +55,16 @@ class Game {
             themeMenu.add(menuItem);
         }
 
-        // The toggle for highlighting the selected tile.
-        JMenuItem highlightOption = new JMenuItem("Highlight");
-        highlightOption.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                panel.toggleHighlightSelectedTile();
-            }
-        });
+        for (final HighlightMode highlightMode : HighlightMode.values()) {
+            JMenuItem menuItem = new JMenuItem(Utils.toTitle(highlightMode.toString()));
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    panel.setHighlightMode(highlightMode);
+                }
+            });
+            highlightMenu.add(menuItem);
+        }
 
         // An option to reset the game.
         JMenuItem resetOption = new JMenuItem("Reset");
@@ -85,7 +88,7 @@ class Game {
 
         optionsMenu.add(sizeMenu);
         optionsMenu.add(themeMenu);
-        optionsMenu.add(highlightOption);
+        optionsMenu.add(highlightMenu);
         optionsMenu.add(resetOption);
         optionsMenu.add(exitOption);
 
