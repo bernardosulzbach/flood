@@ -340,23 +340,32 @@ class TileMatrix {
         initialize();
     }
 
+    /**
+     * Iterates over the TileMatrix setting all tiles that have at least one water neighbor to beach.
+     */
     private void updateTiles() {
-        for (int j = 0; j < tileArray.length; j++) {
+        for (int j = 0; j < tileArray.length; j++) { // Iterate over the matrix using i and j.
             for (int i = 0; i < tileArray.length; i++) {
-                if (!tileArray[j][i].isWater()) {
-                    boolean skipRemainingAdjacentTiles = false;
-                    for (int b = -1; b <= 1 && !skipRemainingAdjacentTiles; b++) {
-                        int y = j + b;
-                        if (y >= 0 && y < tileArray.length) {
-                            for (int a = -1; a <= 1 && !skipRemainingAdjacentTiles; a++) {
-                                int x = i + a;
-                                if (x >= 0 && x < tileArray.length) {
-                                    if (tileArray[y][x].isWater()) {
-                                        tileArray[j][i].setType(TileType.BEACH);
-                                        skipRemainingAdjacentTiles = true;
-                                    }
-                                }
-                            }
+                if (!tileArray[j][i].isWater()) { // If the current tile is not water.
+                    setToBeachIfThereIsWaterNeighbor(j, i);
+                }
+            }
+        }
+    }
+
+    private void setToBeachIfThereIsWaterNeighbor(int j, int i) {
+        if (tileArray[j][i].isWater()) {
+            throw new AssertionError("Called setToBeachIfThereIsWaterNeighbor for a water tile!");
+        }
+        for (int b = -1; b <= 1; b++) { // Iterate over all adjacent tiles.
+            int y = j + b;
+            if (y >= 0 && y < tileArray.length) {
+                for (int a = -1; a <= 1; a++) {
+                    int x = i + a;
+                    if (x >= 0 && x < tileArray.length) {
+                        if (tileArray[y][x].isWater()) { // Looking for water.
+                            tileArray[j][i].setType(TileType.BEACH); // If you find it, set the current tile to beach.
+                            return; // And stop looking.
                         }
                     }
                 }
