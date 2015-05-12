@@ -245,7 +245,7 @@ class TileMatrix {
                                     }
                                 }
                             }
-                        } else {
+                        } else { // The tile is not going to be filled with water, use hill instead.
                             for (int b = 0; b < 2; b++) {
                                 y = j + b;
                                 if (y < tileArray.length) {
