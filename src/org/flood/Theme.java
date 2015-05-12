@@ -17,8 +17,8 @@ class Theme {
 
     public Theme(String name, Color sand, Color grass, Color water) {
         this.name = name;
-        this.colors.put(TileType.SAND, sand);
-        this.colors.put(TileType.GRASS, grass);
+        this.colors.put(TileType.BEACH, sand);
+        this.colors.put(TileType.HILL, grass);
         this.colors.put(TileType.WATER, water);
     }
 

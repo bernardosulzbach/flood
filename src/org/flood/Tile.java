@@ -1,6 +1,8 @@
 package org.flood;
 
 /**
+ * Tile class that stores a TileType and provides convenience predicate methods about its type.
+ * <p/>
  * Created by Bernardo Sulzbach on 02/11/14.
  */
 class Tile {
@@ -19,8 +21,8 @@ class Tile {
         this.type = type;
     }
 
-    public boolean isFloodable() {
-        return type.equals(TileType.SAND);
+    public boolean isBeach() {
+        return type.equals(TileType.BEACH);
     }
 
     public boolean isWater() {

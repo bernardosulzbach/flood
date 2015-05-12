@@ -91,28 +91,28 @@ class TileMatrix {
      * @param j the j coordinate.
      */
     private void flood(int i, int j, boolean simulated) {
-        if (!alreadyHitInThisChainReaction.contains(tileArray[j][i]) && tileArray[j][i].isFloodable()) {
+        if (!alreadyHitInThisChainReaction.contains(tileArray[j][i]) && tileArray[j][i].isBeach()) {
             alreadyHitInThisChainReaction.add(tileArray[j][i]);
             if (!simulated) {
                 tileArray[j][i].setType(TileType.WATER);
             }
             if (j != 0) {
-                if (tileArray[j - 1][i].isFloodable()) {
+                if (tileArray[j - 1][i].isBeach()) {
                     flood(i, j - 1, simulated);
                 }
             }
             if (j != tileArray.length - 1) {
-                if (tileArray[j + 1][i].isFloodable()) {
+                if (tileArray[j + 1][i].isBeach()) {
                     flood(i, j + 1, simulated);
                 }
             }
             if (i != 0) {
-                if (tileArray[j][i - 1].isFloodable()) {
+                if (tileArray[j][i - 1].isBeach()) {
                     flood(i - 1, j, simulated);
                 }
             }
             if (i != tileArray.length - 1) {
-                if (tileArray[j][i + 1].isFloodable()) {
+                if (tileArray[j][i + 1].isBeach()) {
                     flood(i + 1, j, simulated);
                 }
             }
@@ -143,7 +143,7 @@ class TileMatrix {
                                 if (GameData.random.nextDouble() < GameData.WATER_RATE) {
                                     tileArray[y][x] = new Tile(TileType.WATER);
                                 } else {
-                                    tileArray[y][x] = new Tile(TileType.GRASS);
+                                    tileArray[y][x] = new Tile(TileType.HILL);
                                 }
                             } else {
                                 tileArray[y][x] = new Tile(tileArray[y][x - 1].getType());
@@ -252,7 +252,7 @@ class TileMatrix {
                                     for (int a = 0; a < 2; a++) {
                                         x = i + a;
                                         if (x < tileArray.length) {
-                                            tileArray[y][x] = new Tile(TileType.GRASS);
+                                            tileArray[y][x] = new Tile(TileType.HILL);
                                         }
                                     }
                                 }
@@ -354,7 +354,7 @@ class TileMatrix {
                                 x = i + a;
                                 if (x >= 0 && x < tileArray.length) {
                                     if (tileArray[y][x].isWater()) {
-                                        tileArray[j][i].setType(TileType.SAND);
+                                        tileArray[j][i].setType(TileType.BEACH);
                                         skipRemainingAdjacentTiles = true;
                                     }
                                 }
