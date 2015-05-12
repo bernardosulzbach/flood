@@ -67,6 +67,10 @@ class GamePanel extends JPanel {
         });
     }
 
+    public Theme getTheme() {
+        return theme;
+    }
+
     public void setTheme(Theme theme) {
         this.theme = theme;
         repaint();
@@ -194,6 +198,10 @@ class GamePanel extends JPanel {
 
     void resetMouseClicks() {
         mouseClicks = 0;
+    }
+
+    public HighlightMode getHighlightMode() {
+        return highlightMode;
     }
 
     public void setHighlightMode(HighlightMode highlightMode) {

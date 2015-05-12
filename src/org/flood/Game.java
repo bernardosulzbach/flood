@@ -24,6 +24,11 @@ class Game {
         initComponents(gameSize);
     }
 
+    /**
+     * Initializes all components.
+     * <p/>
+     * Should only be called after the {@code panel} class member is already set.
+     */
     private void initComponents(GameSize gameSize) {
         JMenuBar menuBar = new JMenuBar();
         JMenu optionsMenu = new JMenu("Options");
@@ -43,9 +48,13 @@ class Game {
             sizeMenu.add(menuItem);
         }
 
-        // Make a menu items for each Theme.
+        ButtonGroup themeButtonGroup = new ButtonGroup();
         for (final Theme theme : GameData.THEMES) {
-            JMenuItem menuItem = new JMenuItem(theme.name);
+            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(theme.name);
+            themeButtonGroup.add(menuItem);
+            if (theme == panel.getTheme()) {
+                themeButtonGroup.setSelected(menuItem.getModel(), true);
+            }
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -55,8 +64,13 @@ class Game {
             themeMenu.add(menuItem);
         }
 
+        ButtonGroup highlightButtonGroup = new ButtonGroup();
         for (final HighlightMode highlightMode : HighlightMode.values()) {
-            JMenuItem menuItem = new JMenuItem(Utils.toTitle(highlightMode.toString()));
+            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(Utils.toTitle(highlightMode.toString()));
+            highlightButtonGroup.add(menuItem);
+            if (highlightMode == panel.getHighlightMode()) {
+                highlightButtonGroup.setSelected(menuItem.getModel(), true);
+            }
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
