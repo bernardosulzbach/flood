@@ -341,17 +341,15 @@ class TileMatrix {
     }
 
     private void updateTiles() {
-        boolean skipRemainingAdjacentTiles;
-        int x, y;
         for (int j = 0; j < tileArray.length; j++) {
             for (int i = 0; i < tileArray.length; i++) {
                 if (!tileArray[j][i].isWater()) {
-                    skipRemainingAdjacentTiles = false;
+                    boolean skipRemainingAdjacentTiles = false;
                     for (int b = -1; b <= 1 && !skipRemainingAdjacentTiles; b++) {
-                        y = j + b;
+                        int y = j + b;
                         if (y >= 0 && y < tileArray.length) {
                             for (int a = -1; a <= 1 && !skipRemainingAdjacentTiles; a++) {
-                                x = i + a;
+                                int x = i + a;
                                 if (x >= 0 && x < tileArray.length) {
                                     if (tileArray[y][x].isWater()) {
                                         tileArray[j][i].setType(TileType.BEACH);
