@@ -37,7 +37,7 @@ class GamePanel extends JPanel {
         highlightMode = HighlightMode.NONE;
         resize(gameSize);
         // Set the font used to write the status.
-        setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
 
         this.addMouseListener(new MouseAdapter() {
             @Override
