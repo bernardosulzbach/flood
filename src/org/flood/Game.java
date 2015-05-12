@@ -20,7 +20,7 @@ class Game {
     private final GamePanel panel;
 
     Game(GameSize gameSize) {
-        this.panel = new GamePanel(gameSize);
+        panel = new GamePanel(gameSize);
         initComponents(gameSize);
     }
 
@@ -118,7 +118,7 @@ class Game {
     }
 
     public void setTheme(Theme theme) {
-        this.panel.setTheme(theme);
+        panel.setTheme(theme);
     }
 
     void setGameSize(GameSize gameSize) {
