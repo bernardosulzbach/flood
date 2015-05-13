@@ -14,9 +14,6 @@ class GameData {
     static final int MENU_BAR_HEIGHT = 20;
     static final int STATUS_BAR_HEIGHT = 20;
 
-    static final String END_GAME_TITLE = "Flood complete!"; // Seriously? Who would have thought that?
-    static final String END_GAME_MESSAGE = "Everything was flooded.\nPlay again?"; // No. Do not play this again.
-
     static final GeneratorMode DEFAULT_GENERATOR_MODE = GeneratorMode.COMPLEX;
     static final Random random = new Random();
     // Should be nonnegative and smaller than or equal to one.
@@ -30,4 +27,5 @@ class GameData {
             new Theme("Swamp", DARK_OLIVE_GREEN, DARK_GREEN, STEEL_BLUE),
             new Theme("Lava", Color.GRAY, Color.DARK_GRAY, Color.RED)
     };
+
 }

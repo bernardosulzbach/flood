@@ -13,6 +13,8 @@ import java.util.ArrayList;
  */
 class GamePanel extends JPanel {
 
+    static final String END_GAME_TITLE = "Flood complete!"; // Seriously? Who would have thought that?
+    static final String END_GAME_MESSAGE = "Everything was flooded.\nPlay again?"; // No. Do not play this again.
     private static final int MAGIC_FONT_BORDER = 4;
 
     private int tileSide;
@@ -90,7 +92,7 @@ class GamePanel extends JPanel {
      * Prompts the user (using a JOptionPane dialog) if he/she wants to play again or quit.
      */
     private void endGameOptionPane() {
-        int choice = JOptionPane.showConfirmDialog(this, GameData.END_GAME_MESSAGE, GameData.END_GAME_TITLE, JOptionPane.YES_NO_OPTION);
+        int choice = JOptionPane.showConfirmDialog(this, END_GAME_MESSAGE, END_GAME_TITLE, JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.YES_OPTION) {
             reinitialize();
         } else {
