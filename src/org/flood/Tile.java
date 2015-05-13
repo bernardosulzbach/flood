@@ -8,9 +8,11 @@ package org.flood;
 class Tile {
 
     private TileType type;
+    private Population population;
 
     public Tile(TileType type) {
         this.type = type;
+        this.population = Population.makePopulation(type);
     }
 
     public TileType getType() {
@@ -18,6 +20,12 @@ class Tile {
     }
 
     public void setType(TileType type) {
+        if (this.type == type) {
+            throw new AssertionError("Redundant setType(TileType) call.");
+        }
+        if (type == TileType.WATER) {
+            population.setTotal(0);
+        }
         this.type = type;
     }
 
@@ -28,4 +36,9 @@ class Tile {
     public boolean isWater() {
         return type.equals(TileType.WATER);
     }
+
+    public Population getPopulation() {
+        return population;
+    }
+
 }

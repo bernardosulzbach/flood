@@ -264,9 +264,9 @@ class TileMatrix {
                 break;
             }
         }
+        updateWaterCount();
         assertMinimumWaterLevel();
         updateTiles();
-        updateWaterCount();
     }
 
     /**
@@ -323,14 +323,14 @@ class TileMatrix {
 
     /**
      * Guarantees that there is at least one water tile on the array. If (and only if) water was added, it also updates
-     * the tiles.
+     * the water count.
      */
     private void assertMinimumWaterLevel() {
         if (getWaterCount() == 0) {
             int x = GameData.random.nextInt(tileArray.length);
             int y = GameData.random.nextInt(tileArray.length);
             tileArray[y][x].setType(TileType.WATER);
-            updateTiles();
+            updateWaterCount();
         }
     }
 
@@ -348,7 +348,8 @@ class TileMatrix {
     private void updateTiles() {
         for (int j = 0; j < tileArray.length; j++) { // Iterate over the matrix using i and j.
             for (int i = 0; i < tileArray.length; i++) {
-                if (!tileArray[j][i].isWater()) { // If the current tile is not water.
+                Tile tile = tileArray[j][i];
+                if (!tile.isWater() && !tile.isBeach()) { // If the current tile is not water.
                     setToBeachIfThereIsWaterNeighbor(j, i);
                 }
             }
@@ -377,6 +378,16 @@ class TileMatrix {
 
     public Tile getTile(int i, int j) {
         return tileArray[j][i];
+    }
+
+    public int getTotalPopulation() {
+        int total = 0;
+        for (Tile[] row : tileArray) {
+            for (Tile tile : row) {
+                total += tile.getPopulation().getTotal();
+            }
+        }
+        return total;
     }
 
 }

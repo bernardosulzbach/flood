@@ -156,6 +156,11 @@ class GamePanel extends JPanel {
     }
 
     private void updateStatusBar(Graphics g) {
+        updateWaterStatistics(g);
+        updateHumanStatistics(g);
+    }
+
+    private void updateWaterStatistics(Graphics g) {
         g.setColor(Color.GREEN);
         int water = tileMatrix.getWaterCount();
         int total = totalTiles;
@@ -174,6 +179,14 @@ class GamePanel extends JPanel {
             }
         }
         g.drawString(stringBuilder.toString(), MAGIC_FONT_BORDER, getHeight() - MAGIC_FONT_BORDER);
+    }
+
+    private void updateHumanStatistics(Graphics g) {
+        g.setColor(Color.ORANGE);
+        int human = tileMatrix.getTotalPopulation();
+        String humansRemaining = String.format("%d humans remaining.", human);
+        int stringWidth = (int) g.getFontMetrics().getStringBounds(humansRemaining, g).getBounds2D().getWidth();
+        g.drawString(humansRemaining, getWidth() - stringWidth - MAGIC_FONT_BORDER, getHeight() - MAGIC_FONT_BORDER);
     }
 
     void resetMouseClicks() {
