@@ -132,13 +132,13 @@ class GamePanel extends JPanel {
             for (int i = 0; i < tilesPerRow; i++) {
                 g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
                 // The selected tiles are 'down'. All the others are 'up'.
-                if (selection.contains(tileMatrix.getTile(i, j))) {
+                Tile currentTile = tileMatrix.getTile(i, j);
+                if (selection.contains(currentTile)) {
                     g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, false);
                 } else {
                     g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
                 }
-                Tile currentTile = tileMatrix.getTile(i, j);
-                if (currentTile.isBeach()) {
+                if (!currentTile.isWater()) {
                     final int peopleSquareSide = 2;
                     // Is this a place for a poisson disk? Bridson's algorithm?
                     for (int remaining = currentTile.getPopulation().getTotal(); remaining > 0; remaining--) {
