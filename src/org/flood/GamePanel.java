@@ -116,53 +116,31 @@ class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        switch (highlightMode) {
-            case NONE: {
-                for (int j = 0; j < tilesPerRow; j++) {
-                    for (int i = 0; i < tilesPerRow; i++) {
-                        g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
-                        g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
-                    }
-                }
+        int[] coordinates = getMouseCoordinates(getMousePosition());
+        ArrayList<Tile> selection = new ArrayList<Tile>();
+        if (isValidCoordinatePair(coordinates)) {
+            if (highlightMode == HighlightMode.SELECTED_TILE) {
+                selection.add(tileMatrix.getTile(coordinates[0], coordinates[1]));
+            } else if (highlightMode == HighlightMode.FULL) {
+                selection = tileMatrix.getSelection(coordinates[0], coordinates[1]);
             }
-            break;
-            case SELECTED_TILE: {
-                int[] coordinates = getMouseCoordinates(getMousePosition());
-                for (int j = 0; j < tilesPerRow; j++) {
-                    for (int i = 0; i < tilesPerRow; i++) {
-                        g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
-                        // The tile where the mouse is positioned is 'down'. All the others are 'up'.
-                        if (i == coordinates[0] && j == coordinates[1]) {
-                            g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, false);
-                        } else {
-                            g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
-                        }
-                    }
-                }
-            }
-            break;
-            case FULL: {
-                int[] c = getMouseCoordinates(getMousePosition());
-                ArrayList<Tile> selection;
-                if (c[0] != -1 && c[0] < tilesPerRow && c[1] != -1 && c[1] < tilesPerRow) {
-                    selection = tileMatrix.getSelection(c[0], c[1]);
+        }
+        for (int j = 0; j < tilesPerRow; j++) {
+            for (int i = 0; i < tilesPerRow; i++) {
+                g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
+                // The selected tiles are 'down'. All the others are 'up'.
+                if (selection.contains(tileMatrix.getTile(i, j))) {
+                    g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, false);
                 } else {
-                    selection = new ArrayList<Tile>(0);
-                }
-                for (int j = 0; j < tilesPerRow; j++) {
-                    for (int i = 0; i < tilesPerRow; i++) {
-                        g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
-                        // The selected tiles are 'down'. All the others are 'up'.
-                        if (selection.contains(tileMatrix.getTile(i, j))) {
-                            g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, false);
-                        } else {
-                            g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
-                        }
-                    }
+                    g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
                 }
             }
         }
         updateStatusBar(g);
+    }
+
+    private boolean isValidCoordinatePair(int[] pair) {
+        return pair[0] != -1 && pair[0] < tilesPerRow && pair[1] != -1 && pair[1] < tilesPerRow;
     }
 
     /**
