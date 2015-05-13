@@ -122,6 +122,21 @@ class GamePanel extends JPanel {
                     for (int i = 0; i < tilesPerRow; i++) {
                         g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
                         g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
+                        // Experimental.
+                        Tile currentTile = tileMatrix.getTile(i, j);
+                        if (currentTile.isBeach()) {
+                            final int peopleSquareSide = 2;
+                            // Is this a place for a poisson disk? Bridson's algorithm?
+                            for (int remaining = currentTile.getPeopleCount(); remaining > 0; remaining--) {
+                                if (tileSide < 4) {
+                                    throw new AssertionError("tileSide is too small.");
+                                }
+                                int x = 1 + GameData.random.nextInt(tileSide - 3);
+                                int y = 1 + GameData.random.nextInt(tileSide - 3);
+                                g.setColor(Color.RED);
+                                g.fillRect(i * tileSide + x, j * tileSide + y, peopleSquareSide, peopleSquareSide);
+                            }
+                        }
                     }
                 }
             }

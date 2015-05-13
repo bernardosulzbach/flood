@@ -28,4 +28,9 @@ class Tile {
     public boolean isWater() {
         return type.equals(TileType.WATER);
     }
+
+    public int getPeopleCount() {
+        return (int) Math.sqrt(1 + GameData.random.nextInt(9)); // Random integer from the range [1, 3].
+    }
+
 }
