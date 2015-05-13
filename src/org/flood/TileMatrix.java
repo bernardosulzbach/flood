@@ -70,7 +70,7 @@ class TileMatrix {
         }
         flood(i, j);
         alreadyHitInThisChainReaction.clear();
-        updateTiles();
+        updateTiles(false);
         updateWaterCount();
     }
 
@@ -266,7 +266,7 @@ class TileMatrix {
         }
         updateWaterCount();
         assertMinimumWaterLevel();
-        updateTiles();
+        updateTiles(true);
     }
 
     /**
@@ -345,18 +345,28 @@ class TileMatrix {
     /**
      * Iterates over the TileMatrix setting all tiles that have at least one water neighbor to beach.
      */
-    private void updateTiles() {
+    private void updateTiles(boolean overwrite) {
         for (int j = 0; j < tileArray.length; j++) { // Iterate over the matrix using i and j.
             for (int i = 0; i < tileArray.length; i++) {
                 Tile tile = tileArray[j][i];
                 if (!tile.isWater() && !tile.isBeach()) { // If the current tile is not water.
-                    setToBeachIfThereIsWaterNeighbor(j, i);
+                    setToBeachIfThereIsWaterNeighbor(j, i, overwrite);
                 }
             }
         }
     }
 
-    private void setToBeachIfThereIsWaterNeighbor(int j, int i) {
+    /**
+     * Sets the specified Tile to a beach if it has at least one water neighbor. If specified to overwrite, creates a
+     * new Tile to replace the old one. This is used in the matrix initialization when a Tile does not become a beach
+     * after a flood, but starts as one instead. Starting as a beach is different from becoming one as Tile's
+     * constructor takes the TileType into account.
+     *
+     * @param j         the j coordinate
+     * @param i         the i coordinate
+     * @param overwrite if true, creates a new Tile object to replace the old one
+     */
+    private void setToBeachIfThereIsWaterNeighbor(int j, int i, boolean overwrite) {
         if (tileArray[j][i].isWater()) {
             throw new AssertionError("Called setToBeachIfThereIsWaterNeighbor for a water tile!");
         }
@@ -367,7 +377,12 @@ class TileMatrix {
                     int x = i + a;
                     if (x >= 0 && x < tileArray.length) {
                         if (tileArray[y][x].isWater()) { // Looking for water.
-                            tileArray[j][i].setType(TileType.BEACH); // If you find it, set the current tile to beach.
+                            // If you find it, create a beach Tile or set the current Tile to beach.
+                            if (overwrite) {
+                                tileArray[j][i] = new Tile(TileType.BEACH);
+                            } else {
+                                tileArray[j][i].setType(TileType.BEACH);
+                            }
                             return; // And stop looking.
                         }
                     }
