@@ -327,7 +327,9 @@ class TileMatrix {
      */
     private void assertMinimumWaterLevel() {
         if (getWaterCount() == 0) {
-            tileArray[GameData.random.nextInt(tileArray.length)][GameData.random.nextInt(tileArray.length)].setType(TileType.WATER);
+            int x = GameData.random.nextInt(tileArray.length);
+            int y = GameData.random.nextInt(tileArray.length);
+            tileArray[y][x].setType(TileType.WATER);
             updateTiles();
         }
     }
