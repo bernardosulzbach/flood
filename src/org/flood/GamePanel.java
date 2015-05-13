@@ -13,19 +13,16 @@ import java.util.ArrayList;
  */
 class GamePanel extends JPanel {
 
+    public static final int PEOPLE_SQUARE_SIDE = 2;
     static final String END_GAME_TITLE = "Flood complete!"; // Seriously? Who would have thought that?
     static final String END_GAME_MESSAGE = "Everything was flooded.\nPlay again?"; // No. Do not play this again.
     private static final int MAGIC_FONT_BORDER = 4;
-
     private int tileSide;
     private int tilesPerRow;
     private int totalTiles;
-
     private HighlightMode highlightMode;
-
     private Theme theme;
     private TileMatrix tileMatrix;
-
     private int mouseClicks = 0;
 
     /**
@@ -139,7 +136,6 @@ class GamePanel extends JPanel {
                     g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
                 }
                 if (!currentTile.isWater()) {
-                    final int peopleSquareSide = 2;
                     // Is this a place for a poisson disk? Bridson's algorithm?
                     for (int remaining = currentTile.getPopulation().getTotal(); remaining > 0; remaining--) {
                         if (tileSide < 4) {
@@ -148,7 +144,7 @@ class GamePanel extends JPanel {
                         int x = 1 + GameData.random.nextInt(tileSide - 3);
                         int y = 1 + GameData.random.nextInt(tileSide - 3);
                         g.setColor(Color.RED);
-                        g.fillRect(i * tileSide + x, j * tileSide + y, peopleSquareSide, peopleSquareSide);
+                        g.fillRect(i * tileSide + x, j * tileSide + y, PEOPLE_SQUARE_SIDE, PEOPLE_SQUARE_SIDE);
                     }
                 }
             }
