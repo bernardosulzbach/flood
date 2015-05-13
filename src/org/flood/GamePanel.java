@@ -118,6 +118,7 @@ class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         int[] coordinates = getMouseCoordinates(getMousePosition());
         ArrayList<Tile> selection = new ArrayList<Tile>();
         if (isValidCoordinatePair(coordinates)) {
@@ -135,6 +136,20 @@ class GamePanel extends JPanel {
                     g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, false);
                 } else {
                     g.fill3DRect(i * tileSide, j * tileSide, tileSide, tileSide, true);
+                }
+                Tile currentTile = tileMatrix.getTile(i, j);
+                if (currentTile.isBeach()) {
+                    final int peopleSquareSide = 2;
+                    // Is this a place for a poisson disk? Bridson's algorithm?
+                    for (int remaining = currentTile.getPopulation().getTotal(); remaining > 0; remaining--) {
+                        if (tileSide < 4) {
+                            throw new AssertionError("tileSide is too small.");
+                        }
+                        int x = 1 + GameData.random.nextInt(tileSide - 3);
+                        int y = 1 + GameData.random.nextInt(tileSide - 3);
+                        g.setColor(Color.RED);
+                        g.fillRect(i * tileSide + x, j * tileSide + y, peopleSquareSide, peopleSquareSide);
+                    }
                 }
             }
         }
