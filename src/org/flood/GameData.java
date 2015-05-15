@@ -14,7 +14,6 @@ class GameData {
     static final int MENU_BAR_HEIGHT = 20;
     static final int STATUS_BAR_HEIGHT = 20;
 
-    static final GeneratorMode DEFAULT_GENERATOR_MODE = GeneratorMode.COMPLEX;
     static final Random random = new Random();
     // Should be nonnegative and smaller than or equal to one.
     static final double WATER_RATE = 0.2;

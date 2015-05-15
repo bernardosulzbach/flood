@@ -30,7 +30,7 @@ class GamePanel extends JPanel {
      */
     public GamePanel(GameSize gameSize) {
         super();
-        tileMatrix = new TileMatrix(gameSize, GameData.DEFAULT_GENERATOR_MODE);
+        tileMatrix = new TileMatrix(gameSize);
         setBackground(Color.BLACK);
         setTheme(GameData.THEMES[0]);
         highlightMode = HighlightMode.NONE;
@@ -79,7 +79,7 @@ class GamePanel extends JPanel {
      * Updates all customizable variables.
      */
     void resize(GameSize gameSize) {
-        tileMatrix = new TileMatrix(gameSize, GameData.DEFAULT_GENERATOR_MODE);
+        tileMatrix = new TileMatrix(gameSize);
         tilesPerRow = gameSize.tilesPerRow;
         totalTiles = tilesPerRow * tilesPerRow;
         tileSide = gameSize.tileSide;
