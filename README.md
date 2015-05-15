@@ -1,6 +1,8 @@
 Flood
 =====
 
+![Travis](https://travis-ci.org/mafagafogigante/flood.svg?branch=master)
+
 A minimalistic 2D flooding game using Java.
 
 ![Screenshot](https://raw.githubusercontent.com/mafagafogigante/flood/master/screenshots/screenshot-2015-05-13.PNG)
