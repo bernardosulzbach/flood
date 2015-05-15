@@ -5,7 +5,7 @@ package org.flood;
  * <p/>
  * Created by Bernardo Sulzbach on 02/11/14.
  */
-enum TileType {
+public enum TileType {
 
     HILL(4), BEACH(2), WATER(0);
 

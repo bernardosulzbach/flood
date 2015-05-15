@@ -5,7 +5,7 @@ package org.flood;
  * <p/>
  * Created by Bernardo Sulzbach on 02/11/14.
  */
-class Tile {
+public class Tile {
 
     private TileType type;
     private Population population;

@@ -1,4 +1,6 @@
-package org.flood;
+package org.flood.algorithms;
+
+import org.flood.*;
 
 /**
  * Factory methods for InitializationAlgorithm.

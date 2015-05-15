@@ -1,4 +1,6 @@
-package org.flood;
+package org.flood.algorithms;
+
+import org.flood.TileMatrix;
 
 /**
  * An InitializationAlgorithm.

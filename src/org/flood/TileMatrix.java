@@ -1,5 +1,7 @@
 package org.flood;
 
+import org.flood.algorithms.InitializationAlgorithms;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +9,7 @@ import java.util.ArrayList;
  * <p/>
  * Created by Bernardo Sulzbach on 02/11/14.
  */
-class TileMatrix {
+public class TileMatrix {
 
     private final Tile[][] tileArray;
     private final ArrayList<Tile> alreadyHitInThisChainReaction = new ArrayList<Tile>();
