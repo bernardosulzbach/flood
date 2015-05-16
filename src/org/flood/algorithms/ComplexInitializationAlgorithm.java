@@ -9,6 +9,11 @@ import org.flood.*;
  */
 class ComplexInitializationAlgorithm implements InitializationAlgorithm {
 
+    @Override
+    public String getName() {
+        return "Complex";
+    }
+
     // Uses the same algorithm as SQUARES, but after filling a square of tiles of side two with water, there is
     // a 40 % chance of spreading water over one extra tile  that may overlap existing water and
     // a 20 % chance of spreading water over two extra tiles that may overlap existing water.

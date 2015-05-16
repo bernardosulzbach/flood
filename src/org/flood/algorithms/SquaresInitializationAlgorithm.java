@@ -10,6 +10,11 @@ import org.flood.*;
 class SquaresInitializationAlgorithm implements InitializationAlgorithm {
 
     @Override
+    public String getName() {
+        return "Squares";
+    }
+
+    @Override
     public void initialize(TileMatrix tileMatrix) {
         Dimension matrixDimensions = tileMatrix.getDimensions();
         for (int y = 0; y < matrixDimensions.height; y++) {
