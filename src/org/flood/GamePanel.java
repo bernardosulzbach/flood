@@ -14,8 +14,8 @@ import java.util.ArrayList;
 class GamePanel extends JPanel {
 
     public static final int PEOPLE_SQUARE_SIDE = 2;
-    static final String END_GAME_TITLE = "Flood complete!"; // Seriously? Who would have thought that?
-    static final String END_GAME_MESSAGE = "Everything was flooded.\nPlay again?"; // No. Do not play this again.
+    static final String END_GAME_TITLE = "Flood complete!";
+    static final String END_GAME_MESSAGE = "Everything was flooded.\nPlay again?";
     private static final int MAGIC_FONT_BORDER = 4;
     private int tileSide;
     private int tilesPerRow;
