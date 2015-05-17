@@ -48,7 +48,6 @@ class Game {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     configuration.setGameSize(possibleSize);
-                    resetGameSize();
                 }
             });
             sizeMenu.add(menuItem);
@@ -147,6 +146,10 @@ class Game {
 
     public void notifyThemeChange() {
         panel.repaint();
+    }
+
+    public void notifyGameSizeChange() {
+        resetGameSize();
     }
 
     void resetGameSize() {

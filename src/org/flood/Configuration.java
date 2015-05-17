@@ -49,7 +49,10 @@ public class Configuration {
     }
 
     public void setGameSize(GameSize gameSize) {
-        this.gameSize = gameSize;
+        if (!getGameSize().equals(gameSize)) {
+            this.gameSize = gameSize;
+            this.game.notifyGameSizeChange();
+        }
     }
 
     public Theme getTheme() {
@@ -144,7 +147,7 @@ public class Configuration {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JComboBox box = (JComboBox) e.getSource();
-                gameSize = (GameSize) box.getSelectedItem();
+                setGameSize((GameSize) box.getSelectedItem());
             }
         });
         panel.add(label, BorderLayout.NORTH);
