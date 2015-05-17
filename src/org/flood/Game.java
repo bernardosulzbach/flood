@@ -15,6 +15,12 @@ import static org.flood.GameData.STATUS_BAR_HEIGHT;
  */
 class Game {
 
+    private final static CircularQueue<String> TIPS = new CircularQueue<String>();
+
+    static {
+        TIPS.add("You can change the algorithm used to generate the tiles in the configurations.");
+    }
+
     private final JFrame frame = new JFrame("Flood!");
     private final Configuration configuration = new Configuration(this);
     private final GamePanel panel = new GamePanel(configuration);
@@ -96,6 +102,17 @@ class Game {
             @Override
             public void actionPerformed(ActionEvent e) {
                 configuration.showConfigurationFrame(frame);
+
+            }
+        });
+
+        JMenuItem tip = new JMenuItem("Tip");
+        tip.setToolTipText("Displays a pop-up with a tip about the game.");
+        tip.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nextTip = TIPS.poll();
+                JOptionPane.showMessageDialog(frame, nextTip);
             }
         });
 
@@ -114,6 +131,7 @@ class Game {
         optionsMenu.add(highlightMenu);
         optionsMenu.add(resetOption);
         optionsMenu.add(configurationsOption);
+        optionsMenu.add(tip);
         optionsMenu.add(exitOption);
 
         menuBar.add(optionsMenu);
