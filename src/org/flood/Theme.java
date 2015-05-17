@@ -22,4 +22,9 @@ class Theme {
         this.colors.put(TileType.WATER, water);
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }
