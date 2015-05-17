@@ -10,11 +10,6 @@ import org.flood.*;
 class SimpleInitializationAlgorithm implements InitializationAlgorithm {
 
     @Override
-    public String getName() {
-        return "Simple";
-    }
-
-    @Override
     public void initialize(TileMatrix tileMatrix) {
         Dimension matrixDimensions = tileMatrix.getDimensions();
         for (int y = 0; y < matrixDimensions.height; y++) {
@@ -28,6 +23,11 @@ class SimpleInitializationAlgorithm implements InitializationAlgorithm {
                 tileMatrix.setTile(x, y, tile);
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Simple";
     }
 
 }

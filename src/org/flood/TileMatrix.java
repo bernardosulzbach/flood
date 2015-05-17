@@ -1,7 +1,5 @@
 package org.flood;
 
-import org.flood.algorithms.InitializationAlgorithms;
-
 import java.util.ArrayList;
 
 /**
@@ -14,11 +12,14 @@ public class TileMatrix {
     private final Tile[][] tileArray;
     private final ArrayList<Tile> alreadyHitInThisChainReaction = new ArrayList<Tile>();
     private final Dimension dimensions;
+    private final Configuration configuration;
     private int lastWaterCount;
 
-    public TileMatrix(GameSize gameSize) {
+    public TileMatrix(Configuration configuration) {
+        GameSize gameSize = configuration.getGameSize();
         this.tileArray = new Tile[gameSize.tilesPerRow][gameSize.tilesPerRow];
         this.dimensions = new Dimension(gameSize.tilesPerRow, gameSize.tilesPerRow);
+        this.configuration = configuration;
         initialize();
     }
 
@@ -118,7 +119,7 @@ public class TileMatrix {
     }
 
     private void initialize() {
-        InitializationAlgorithms.getBestAlgorithm().initialize(this);
+        configuration.getInitializationAlgorithm().initialize(this);
         updateWaterCount();
         assertMinimumWaterLevel();
         updateTiles(true);

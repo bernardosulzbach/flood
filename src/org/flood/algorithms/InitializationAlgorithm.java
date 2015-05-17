@@ -9,8 +9,6 @@ import org.flood.TileMatrix;
  */
 public interface InitializationAlgorithm {
 
-    String getName();
-
     void initialize(TileMatrix tileMatrix);
 
 }

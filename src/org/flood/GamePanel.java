@@ -21,20 +21,20 @@ class GamePanel extends JPanel {
     private int tilesPerRow;
     private int totalTiles;
     private HighlightMode highlightMode;
-    private Theme theme;
     private TileMatrix tileMatrix;
+    private Configuration configuration;
     private int mouseClicks = 0;
 
     /**
      * The default constructor.
      */
-    public GamePanel(GameSize gameSize) {
+    public GamePanel(Configuration configuration) {
         super();
-        tileMatrix = new TileMatrix(gameSize);
+        this.configuration = configuration;
+        tileMatrix = new TileMatrix(configuration);
         setBackground(Color.BLACK);
-        setTheme(GameData.THEMES[0]);
         highlightMode = HighlightMode.NONE;
-        resize(gameSize);
+        resize(configuration);
         // Set the font used to write the status.
         setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
 
@@ -67,22 +67,17 @@ class GamePanel extends JPanel {
     }
 
     public Theme getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
-        repaint();
+        return configuration.getTheme();
     }
 
     /**
      * Updates all customizable variables.
      */
-    void resize(GameSize gameSize) {
-        tileMatrix = new TileMatrix(gameSize);
-        tilesPerRow = gameSize.tilesPerRow;
+    void resize(Configuration configuration) {
+        tileMatrix = new TileMatrix(configuration);
+        tilesPerRow = configuration.getGameSize().tilesPerRow;
         totalTiles = tilesPerRow * tilesPerRow;
-        tileSide = gameSize.tileSide;
+        tileSide = configuration.getGameSize().tileSide;
     }
 
     /**
@@ -126,7 +121,7 @@ class GamePanel extends JPanel {
         }
         for (int j = 0; j < tilesPerRow; j++) {
             for (int i = 0; i < tilesPerRow; i++) {
-                g.setColor(theme.colors.get(tileMatrix.getTileType(i, j)));
+                g.setColor(configuration.getTheme().colors.get(tileMatrix.getTileType(i, j)));
                 // The selected tiles are 'down'. All the others are 'up'.
                 Tile currentTile = tileMatrix.getTile(i, j);
                 if (selection.contains(currentTile)) {

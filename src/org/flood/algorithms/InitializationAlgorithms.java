@@ -1,5 +1,9 @@
 package org.flood.algorithms;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Factory methods for InitializationAlgorithm.
  * <p/>
@@ -7,12 +11,26 @@ package org.flood.algorithms;
  */
 public abstract class InitializationAlgorithms {
 
-    private static final InitializationAlgorithm SIMPLE = new SimpleInitializationAlgorithm();
-    private static final InitializationAlgorithm SQUARES = new SquaresInitializationAlgorithm();
-    private static final InitializationAlgorithm COMPLEX = new ComplexInitializationAlgorithm();
+    private static List<InitializationAlgorithm> ALGORITHMS = new ArrayList<InitializationAlgorithm>();
 
-    public static InitializationAlgorithm getBestAlgorithm() {
-        return COMPLEX;
+    static {
+        ALGORITHMS.add(new SimpleInitializationAlgorithm());
+        ALGORITHMS.add(new SquaresInitializationAlgorithm());
+        ALGORITHMS.add(new ComplexInitializationAlgorithm());
+        ALGORITHMS = Collections.unmodifiableList(ALGORITHMS);
+    }
+
+    public static InitializationAlgorithm getDefaultAlgorithm() {
+        return ALGORITHMS.get(ALGORITHMS.size() - 1);
+    }
+
+    /**
+     * Returns a List of all the available InitializationAlgorithms.
+     *
+     * @return a List of all the available InitializationAlgorithms
+     */
+    public static List<InitializationAlgorithm> getInitializationAlgorithms() {
+        return ALGORITHMS;
     }
 
 }

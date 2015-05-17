@@ -8,8 +8,7 @@ package org.flood;
 public class Launcher {
 
     public static void main(String[] args) {
-        Game game = new Game(GameSize.MEDIUM);
-        game.setTheme(GameData.THEMES[0]);
+        new Game();
     }
 
 }

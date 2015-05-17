@@ -16,12 +16,11 @@ import static org.flood.GameData.STATUS_BAR_HEIGHT;
 class Game {
 
     private final JFrame frame = new JFrame("Flood!");
+    private final Configuration configuration = new Configuration(this);
+    private final GamePanel panel = new GamePanel(configuration);
 
-    private final GamePanel panel;
-
-    Game(GameSize gameSize) {
-        panel = new GamePanel(gameSize);
-        initComponents(gameSize);
+    Game() {
+        initComponents();
     }
 
     /**
@@ -29,7 +28,7 @@ class Game {
      * <p/>
      * Should only be called after the {@code panel} class member is already set.
      */
-    private void initComponents(GameSize gameSize) {
+    private void initComponents() {
         JMenuBar menuBar = new JMenuBar();
         JMenu optionsMenu = new JMenu("Options");
         JMenu sizeMenu = new JMenu("Size");
@@ -42,7 +41,8 @@ class Game {
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    setGameSize(possibleSize);
+                    configuration.setGameSize(possibleSize);
+                    resetGameSize();
                 }
             });
             sizeMenu.add(menuItem);
@@ -58,7 +58,7 @@ class Game {
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    setTheme(theme);
+                    configuration.setTheme(theme);
                 }
             });
             themeMenu.add(menuItem);
@@ -90,6 +90,15 @@ class Game {
             }
         });
 
+        JMenuItem configurationsOption = new JMenuItem("Configurations");
+        configurationsOption.setToolTipText("Opens the configuration panel.");
+        configurationsOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                configuration.showConfigurationFrame(frame);
+            }
+        });
+
         // Another way to close the game.
         JMenuItem exitOption = new JMenuItem("Exit");
         exitOption.setToolTipText("Because simply closing the window is far too mainstream.");
@@ -104,6 +113,7 @@ class Game {
         optionsMenu.add(themeMenu);
         optionsMenu.add(highlightMenu);
         optionsMenu.add(resetOption);
+        optionsMenu.add(configurationsOption);
         optionsMenu.add(exitOption);
 
         menuBar.add(optionsMenu);
@@ -114,17 +124,17 @@ class Game {
         frame.setResizable(false);
         // The frame must be set visible before the game size is set due to a Windows windowing issue.
         frame.setVisible(true);
-        setGameSize(gameSize);
+        resetGameSize();
     }
 
-    public void setTheme(Theme theme) {
-        panel.setTheme(theme);
+    public void notifyThemeChange() {
+        panel.repaint();
     }
 
-    void setGameSize(GameSize gameSize) {
-        panel.resize(gameSize);
+    void resetGameSize() {
+        panel.resize(configuration);
         panel.reinitialize();
-        updateFrameSize(gameSize);
+        updateFrameSize(configuration.getGameSize());
         centerFrame();
     }
 
